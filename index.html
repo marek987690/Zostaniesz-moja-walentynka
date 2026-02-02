@@ -8,107 +8,93 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-body {
-    margin: 0;
-    overflow: hidden;
-    font-family: 'Poppins', sans-serif;
-    background: radial-gradient(circle, #ffe6f0, #ffb6c1);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
+    body {
+        margin: 0;
+        overflow: hidden;
+        font-family: 'Poppins', sans-serif;
+        background: radial-gradient(circle, #ffe6f0, #ffb6c1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
 
-/* GŁÓWNY KONTENER */
-#container {
-    text-align: center;
-    position: relative;
-    z-index: 2;
-}
+    #container {
+        text-align: center;
+        position: relative;
+        z-index: 2;
+    }
 
-/* GŁÓWNE ZDJĘCIE – KWADRAT */
-#mainImage {
-    width: 300px;
-    height: 300px;
-    object-fit: cover;
-    border-radius: 20px;
-    transition: transform 1s ease;
-}
+    #mainImage {
+        width: 300px;
+        transition: transform 1s ease;
+    }
 
-/* TEKST */
-h1 {
-    font-weight: 600;
-    margin: 20px 0;
-    color: #b30059;
-}
+    h1 {
+        font-weight: 600;
+        margin: 20px 0;
+        color: #b30059;
+    }
 
-/* PRZYCISKI */
-.buttons {
-    margin-top: 25px;
-    position: relative;
-}
+    .buttons {
+        margin-top: 20px;
+        position: relative;
+    }
 
-/* WSPÓLNE */
-button {
-    font-family: 'Poppins', sans-serif;
-    font-size: 20px;
-    padding: 12px 32px;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: transform 0.3s;
-}
+    button {
+        font-family: 'Poppins', sans-serif;
+        font-size: 20px;
+        padding: 12px 30px;
+        margin: 10px;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: transform 0.3s;
+    }
 
-/* TAK */
-#yesBtn {
-    background: #ff4d88;
-    color: white;
-    margin-right: 50px;
-}
+    #yesBtn {
+        background: #ff4d88;
+        color: white;
+    }
 
-/* NIE */
-#noBtn {
-    background: #ddd;
-    position: relative;
-}
+    #noBtn {
+        background: #ddd;
+        position: relative;
+    }
 
-/* DOLNE ZDJĘCIE */
-#extraImage {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 16px;
-    display: none;
-    margin-top: 25px;
-    transition: transform 0.5s;
-}
+    #extraImage {
+        width: 150px;
+        display: none;
+        margin-top: 20px;
+        transition: transform 0.5s;
+    }
 
-/* ❤️ SPADAJĄCE SERCA */
-.falling {
-    position: absolute;
-    top: -80px;
-    width: 50px;
-    animation: fall linear infinite, pulse 1.5s ease-in-out infinite;
-    pointer-events: none;
-    z-index: 1;
-}
+    /* ❤️ SPADAJĄCE + PULSUJĄCE SERCA (img7) */
+    .falling {
+        position: absolute;
+        top: -80px;
+        width: 50px;
+        animation: fall linear infinite, pulse 1.5s ease-in-out infinite;
+        pointer-events: none;
+        z-index: 1;
+    }
 
-@keyframes fall {
-    from { top: -80px; }
-    to { top: 110vh; }
-}
+    @keyframes fall {
+        from { top: -80px; }
+        to { top: 110vh; }
+    }
 
-@keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.3); }
-}
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.3); }
+    }
 </style>
 </head>
 
 <body>
 
 <div id="container">
-    <img id="mainImage" src="assets/img1.jpg">
+    <img id="mainImage" src="assets/img1.jpg" alt="main">
 
     <h1 id="question">Zostaniesz moją walentynką?</h1>
 
@@ -117,7 +103,7 @@ button {
         <button id="noBtn">Nie</button>
     </div>
 
-    <img id="extraImage" src="assets/img5.jpg">
+    <img id="extraImage" src="assets/img5.jpg" alt="extra">
 </div>
 
 <audio id="music" src="assets/music1.mp3"></audio>
@@ -144,7 +130,7 @@ const question = document.getElementById("question");
 const extraImage = document.getElementById("extraImage");
 const music = document.getElementById("music");
 
-/* ❌ NIE */
+/* ❌ Obsługa przycisku NIE */
 noBtn.addEventListener("click", () => {
 
     if (!escapeMode) {
@@ -162,16 +148,21 @@ noBtn.addEventListener("click", () => {
         }
 
     } else {
-        moveNoButton();
+        const x = Math.random() * (window.innerWidth - 140);
+        const y = Math.random() * (window.innerHeight - 70);
+        noBtn.style.position = "fixed";
+        noBtn.style.left = x + "px";
+        noBtn.style.top = y + "px";
     }
 
     yesScale += 0.25;
     yesBtn.style.transform = `scale(${yesScale})`;
 });
 
-/* ✅ TAK */
+/* ✅ Obsługa przycisku TAK */
 yesBtn.addEventListener("click", () => {
     buttons.style.display = "none";
+
     music.play();
 
     mainImage.src = "assets/img4.jpg";
@@ -182,7 +173,7 @@ yesBtn.addEventListener("click", () => {
     startFalling();
 });
 
-/* 🔄 DOLNE ZDJĘCIE */
+/* 🔄 Dolne zdjęcie */
 extraImage.addEventListener("click", () => {
     extraImage.src = "assets/img6.jpg";
     let dir = 1;
@@ -193,16 +184,7 @@ extraImage.addEventListener("click", () => {
     }, 500);
 });
 
-/* LOSOWA POZYCJA NIE */
-function moveNoButton() {
-    const x = Math.random() * (window.innerWidth - 150);
-    const y = Math.random() * (window.innerHeight - 80);
-    noBtn.style.position = "fixed";
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
-}
-
-/* SERCA */
+/* 💕 Spadające serca */
 function startFalling() {
     setInterval(() => {
         const img = document.createElement("img");
