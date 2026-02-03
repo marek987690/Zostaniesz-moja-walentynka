@@ -43,7 +43,7 @@ body {
     height: 300px;
     object-fit: cover;
     border-radius: 20px;
-    transition: transform 1s ease;
+    transition: transform 1s ease, opacity 0.6s ease;
 }
 
 /* NAPIS */
@@ -51,7 +51,7 @@ body {
     font-weight: 600;
     color: #b30059;
     position: relative;
-    top: 0px; /* ← REGULUJ POZYCJĘ */
+    top: 0px;
 }
 
 /* EMOJI */
@@ -59,7 +59,7 @@ body {
     font-size: 32px;
     margin-top: 10px;
     position: relative;
-    top: 5px; /* ← REGULUJ */
+    top: 5px;
 }
 
 /* PRZYCISKI */
@@ -89,7 +89,7 @@ button {
     position: relative;
 }
 
-/* ZDJĘCIE Z DOŁU (img5 / img6) */
+/* ZDJĘCIE Z DOŁU */
 #extraImage {
     width: 150px;
     height: 150px;
@@ -103,18 +103,17 @@ button {
     transition: bottom 1s ease, opacity 1s ease, transform 0.5s;
 }
 
-/* GIF LEWY */
+/* GIFY */
 #gifLeft {
     width: 120px;
     position: fixed;
     left: -200px;
-    bottom: 120px; /* ← REGULUJ WYSOKOŚĆ */
+    bottom: 120px;
     transition: left 1s ease;
     z-index: 3;
     display: none;
 }
 
-/* GIF PRAWY */
 #gifRight {
     width: 120px;
     position: fixed;
@@ -249,6 +248,13 @@ yesBtn.addEventListener("click", () => {
 extraImage.addEventListener("click", () => {
     if (extraActivated) return;
     extraActivated = true;
+
+    /* 🔥 NOWE: ZMIANA GŁÓWNEGO ZDJĘCIA */
+    mainImage.style.opacity = "0";
+    setTimeout(() => {
+        mainImage.src = "assets/img8.jpg";
+        mainImage.style.opacity = "1";
+    }, 300);
 
     extraImage.src = "assets/img6.jpg";
 
