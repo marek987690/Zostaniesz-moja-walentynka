@@ -19,7 +19,7 @@ body {
     height: 100vh;
 }
 
-/* GŁÓWNY KONTENER */
+/* KONTENER */
 #container {
     text-align: center;
     position: relative;
@@ -40,15 +40,15 @@ body {
     font-weight: 600;
     color: #b30059;
     position: relative;
-    top: 0px;      /* ← ZMIENIASZ POZYCJĘ NAPISU */
+    top: 0px; /* REGULUJ */
 }
 
-/* EMOJI */
+/* SERDUSZKA */
 #hearts {
     font-size: 32px;
     margin-top: 10px;
     position: relative;
-    top: 5px;      /* ← ZMIENIASZ POZYCJĘ EMOJI */
+    top: 5px; /* REGULUJ */
 }
 
 /* PRZYCISKI */
@@ -78,7 +78,7 @@ button {
     position: relative;
 }
 
-/* ZDJĘCIE WYJEŻDŻAJĄCE Z DOŁU */
+/* ZDJĘCIE Z DOŁU */
 #extraImage {
     width: 150px;
     height: 150px;
@@ -87,12 +87,34 @@ button {
     margin: 20px auto 0;
     display: none;
     position: relative;
-    bottom: -200px;      /* START Z DOŁU */
+    bottom: -200px;
     opacity: 0;
     transition: bottom 1s ease, opacity 1s ease;
 }
 
-/* SERCA */
+/* GIF LEWY */
+#gifLeft {
+    width: 120px;
+    position: fixed;
+    left: -200px;
+    bottom: 120px; /* REGULUJ */
+    transition: left 1s ease;
+    display: none;
+    z-index: 3;
+}
+
+/* GIF PRAWY */
+#gifRight {
+    width: 120px;
+    position: fixed;
+    right: -200px;
+    bottom: 120px; /* REGULUJ */
+    transition: right 1s ease;
+    display: none;
+    z-index: 3;
+}
+
+/* SPADAJĄCE SERCA */
 .falling {
     position: absolute;
     top: -80px;
@@ -129,6 +151,8 @@ button {
     </div>
 
     <img id="extraImage" src="assets/img5.jpg">
+    <img id="gifLeft" src="assets/gif1.gif">
+    <img id="gifRight" src="assets/gif2.gif">
 </div>
 
 <audio id="music" src="assets/music1.mp3"></audio>
@@ -154,11 +178,12 @@ const buttons = document.getElementById("buttons");
 const question = document.getElementById("question");
 const hearts = document.getElementById("hearts");
 const extraImage = document.getElementById("extraImage");
+const gifLeft = document.getElementById("gifLeft");
+const gifRight = document.getElementById("gifRight");
 const music = document.getElementById("music");
 
 /* NIE */
 noBtn.addEventListener("click", () => {
-
     if (!escapeMode) {
         noStage++;
 
@@ -173,11 +198,9 @@ noBtn.addEventListener("click", () => {
             escapeMode = true;
         }
     } else {
-        const x = Math.random() * (window.innerWidth - 150);
-        const y = Math.random() * (window.innerHeight - 80);
         noBtn.style.position = "fixed";
-        noBtn.style.left = x + "px";
-        noBtn.style.top = y + "px";
+        noBtn.style.left = Math.random() * (window.innerWidth - 150) + "px";
+        noBtn.style.top = Math.random() * (window.innerHeight - 80) + "px";
     }
 
     yesScale += 0.25;
@@ -195,12 +218,20 @@ yesBtn.addEventListener("click", () => {
     question.textContent = "Wiedziałem że się zgodzisz :)";
     hearts.textContent = "💖💖💖";
 
+    /* dolne zdjęcie */
     extraImage.style.display = "block";
-
-    /* animacja z dołu do góry */
     setTimeout(() => {
         extraImage.style.bottom = "0px";
         extraImage.style.opacity = "1";
+    }, 50);
+
+    /* gify */
+    gifLeft.style.display = "block";
+    gifRight.style.display = "block";
+
+    setTimeout(() => {
+        gifLeft.style.left = "calc(50% - 240px)";
+        gifRight.style.right = "calc(50% - 240px)";
     }, 50);
 
     startFalling();
@@ -210,7 +241,6 @@ yesBtn.addEventListener("click", () => {
 extraImage.addEventListener("click", () => {
     extraImage.src = "assets/img6.jpg";
     let dir = 1;
-
     setInterval(() => {
         extraImage.style.transform = `rotate(${dir * 45}deg)`;
         dir *= -1;
@@ -226,7 +256,6 @@ function startFalling() {
         img.style.left = Math.random() * window.innerWidth + "px";
         img.style.animationDuration = (3 + Math.random() * 3) + "s";
         document.body.appendChild(img);
-
         setTimeout(() => img.remove(), 7000);
     }, 250);
 }
